@@ -1,3 +1,30 @@
+<?php
+include_once "../util.php"; // Include the utility functions for database connection and sanitization
+session_start();
+
+$conn = connectToDatabase();
+
+// Get application ID from the session if it exists
+if (isset($_SESSION["student_id"])) {
+    $student_id = $_SESSION["student_id"];
+    $query = "SELECT application_id FROM applications WHERE student_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $student_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $_SESSION["application_id"] = $row["application_id"];
+    } else {
+        $_SESSION["application_id"] = null;
+    }
+} else {
+    header("Location: student_login.php"); // Redirect to login page if not logged in
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -133,25 +160,28 @@
 
 <div class="dashboard">
     <div class="welcome">
-        <h2>Welcome, [Student Name]</h2>
+        <h2>Welcome, <?php echo $_SESSION["name"]; ?></h2>
         <p>Your one-stop portal for admission to the University of Botswana.</p>
     </div>
 
     <!-- Key Action Buttons -->
     <div class="button-bar">
-        <button onclick="window.location.href='apply.php'">Start New Application</button>
-        <button onclick="window.location.href='upload_documents.php'">Upload Documents</button>
-        <button onclick="window.location.href='edit_personal_info.php'">Edit Personal Info</button>
+        <?php
+        // Check if the user filled out the application form
+        if (isset($_SESSION["application_id"])) {
+            echo "<button onclick=\"window.location.href='edit_personal.php'\">Edit Personal Info</button>";
+        } else {
+            echo "<button onclick=\"window.location.href='form.php'\">New Application</button>";
+        }
+        ?>
     </div>
 
     <!-- Navigation Cards -->
     <div class="nav-grid">
-        <div class="card"><a href="view_application.php">View Submitted Application</a></div>
-        <div class="card"><a href="application_status.php">Check Application Status</a></div>
         <div class="card"><a href="notifications.php">Notifications</a></div>
         <div class="card"><a href="support.php">Contact Support</a></div>
-        <div class="card"><a href="faq.php">Frequently Asked Questions</a></div>
-        <div class="card"><a href="admission_requirements.php">Admission Requirements</a></div>
+        <div class="card"><a href="faq.html">Frequently Asked Questions</a></div>
+        <div class="card"><a href="admission_requirements.html">Admission Requirements</a></div>
         <div class="card"><a href="important_dates.php">Important Dates & Deadlines</a></div>
         <div class="card"><a href="orientation_guide.php">New Student Orientation</a></div>
     </div>

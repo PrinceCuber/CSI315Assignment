@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h2>Create an Account</h2>
+        <form action="student_register.php" method="POST">
+            <div class="form-group">
+                <label for="signupEmail">Name:</label>
+                <input type="name" id="signupName" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="signupEmail">Email:</label>
+                <input type="email" id="signupEmail" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">Password:</label>
+                <input type="password" id="signupPassword" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">Confirm Password:</label>
+                <input type="password" id="signupConfirmPassword" name="confirmPassword" required>
+            </div>
+            <button type="submit">Sign Up</button>
+            <p>Already have an account? <a href="student_login.html">Log in</a></p>
+        </form>
+    </div>
+</body>
+</html>
