@@ -2,6 +2,27 @@
 include_once "../util.php"; // Include the utility functions for database connection and sanitization
 session_start();
 
+$conn = connectToDatabase();
+
+// Get application ID from the session if it exists
+if (isset($_SESSION["student_id"])) {
+    $student_id = $_SESSION["student_id"];
+    $query = "SELECT application_id FROM applications WHERE student_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $student_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $_SESSION["application_id"] = $row["application_id"];
+    } else {
+        $_SESSION["application_id"] = null;
+    }
+} else {
+    header("Location: student_login.php"); // Redirect to login page if not logged in
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -148,8 +169,7 @@ session_start();
         <?php
         // Check if the user filled out the application form
         if (isset($_SESSION["application_id"])) {
-            echo "<button onclick=\"window.location.href='view_application.php'\">View Application</button>";
-            echo "<button onclick=\"window.location.href='edit_application.php'\">Edit Application</button>";
+            echo "<button onclick=\"window.location.href='edit_personal.php'\">Edit Personal Info</button>";
         } else {
             echo "<button onclick=\"window.location.href='form.php'\">New Application</button>";
         }

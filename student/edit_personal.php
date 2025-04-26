@@ -114,8 +114,6 @@ session_start();
                             <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($row['phone']); ?>" required>
                             <label for="address">Address:</label>
                             <input type="text" id="address" name="address" value="<?php echo htmlspecialchars($row['address']); ?>" required>
-                            <label for="resume">Resume:</label>
-                            <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx">
                             <button type="submit">Update Application</button>
                         </form>
                     </div>
