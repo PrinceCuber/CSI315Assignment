@@ -1,12 +1,12 @@
 <?php 
 require_once '../util.php'; // Include the utility functions for database connection and sanitization
-session_start(); // Start the session
+session_start(); 
 
-$conn = connectToDatabase(); // Connect to the database
+$conn = connectToDatabase(); 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form is submitted
-    $email = sanitizeInput($_POST["email"]); // Sanitize the email input
-    $password = sanitizeInput($_POST["password"]); // Sanitize the password input
+if ($_SERVER["REQUEST_METHOD"] == "POST") { 
+    $email = sanitizeInput($_POST["email"]); 
+    $password = sanitizeInput($_POST["password"]); 
 
     // Validate email and password format
     if (!validateEmail($email)) {
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form is submitted
     if ($result->num_rows > 0) { // If a matching record is found
         if ($row = $result->fetch_assoc()) { // Fetch the record
             if (password_verify($password, $row['password'])) { // Verify the password
-                $_SESSION['student_id'] = $row['id']; // Store the student ID in session
+                $_SESSION['student_id'] = $row['student_id']; // Store the student ID in session
                 $_SESSION['email'] = $row['email']; // Store the email in session
                 $_SESSION['name'] = $row['name']; // Store the name in session
             } else {
@@ -38,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form is submitted
     } else {
         echo "Invalid email or password"; // Invalid credentials message
     }
+
+    $stmt->close(); // Close the statement
 }
-$stmt->close(); // Close the statement
 ?>

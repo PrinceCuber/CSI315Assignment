@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,8 +23,7 @@
         <h2>Personal Information</h2>
         <div class="form-group">
             <label for="fullName">Full Name:</label>
-            <input type="text" id="fullName" name="full_name" required>
-            <div id="fullNameError" class="error-message"></div>
+            <input type="text" id="fullName" name="full_name" value="<?php echo $_SESSION["name"] ?>" required>
         </div>
         <div class="form-group">
             <label for="ID">ID:</label>
